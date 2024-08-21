@@ -1,24 +1,20 @@
 import {Component, OnInit} from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import OpenAI from "openai";
-import { EnvService } from '@ngx-env/core';
-
+import {FormsModule} from "@angular/forms";
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet],
+  imports: [RouterOutlet, FormsModule],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
 
 
 export class AppComponent implements OnInit {
-   openai = new OpenAI({ apiKey: process.env['OPENAI_API_KEY']
-     , dangerouslyAllowBrowser: true});
+   openai = new OpenAI({ });
 
-  constructor(private envService: EnvService) {
-    this.openai = new OpenAI({ apiKey: this.envService.get('OPENAI_API_KEY') });
-  }
+movieTitle: String ='';
 
 
   title = 'WhatShouldIWatchNext';
@@ -30,7 +26,7 @@ export class AppComponent implements OnInit {
         {role: "system", content: "You are a helpful assistant."},
         {
           role: "user",
-          content: "Write a haiku about recursion in programming.",
+          content: "Give me the name of one movie that is similar to"+this.movieTitle+". Respond with only the movie name.",
         },
       ],
     });
